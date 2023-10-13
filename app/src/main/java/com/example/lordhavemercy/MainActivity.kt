@@ -21,6 +21,37 @@ class MainActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.button)
         val next = findViewById<Button>(R.id.button3)
         var enteredText = ""
+
+        //for login of the the button
+        var emailview = findViewById<EditText>(R.id.email)
+        var passwordview = findViewById<EditText>(R.id.password)
+        val button2 = findViewById<Button>(R.id.button2)
+        val display= findViewById<TextView>(R.id.textView2)
+
+        //button event listener for button
+        var email = ""
+        var password = ""
+        button2.setOnClickListener {
+                   email = emailview.text.toString()
+                   password = passwordview.text.toString()
+
+
+            // then validation making sure email is entered and password as well
+            if (email == "" || password == ""){
+
+
+                Toast.makeText(
+                    this@MainActivity,
+                    "please enter your email/password",
+                    Toast.LENGTH_SHORT).show()
+            }else  {
+                display.text = "hello dear your email is $email and password is $password"
+                //to make sure after submission text is deleted in textfield
+                emailview.text.clear()
+                passwordview.text.clear()
+
+            }
+        }
         button.setOnClickListener {
             enteredText = inputText.text.toString()
             if (enteredText == ""){
@@ -40,13 +71,32 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        var car = Car()
+        car.maxspeed = 170
+        car.start()
+
+        val driver = Driver("agatha")
+        driver.showDetails()
+
+
         //navigate to the second activity
         next.setOnClickListener {
             val intent = Intent(this, SecondActivity::class.java)
-            intent.putExtra("USER", enteredText)
-            startActivity(intent)
+            if(email == "agathachituwa@gmail.com" && password == "12345678"){
+
+                intent.putExtra("USER", enteredText)
+                intent.putExtra("EMAIL", email)
+
+                startActivity(intent)
+
+            }
+
         }
 
 
+    }
+
+    override fun onRestart() {
+        super.onRestart()
     }
 }

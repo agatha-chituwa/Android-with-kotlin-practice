@@ -9,8 +9,10 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.second_activity)
         var username = intent.getStringExtra("USER")
-        var textView = findViewById<TextView>(R.id.textView2)
-        var message = "$username, you are logged in"
+        var email= intent.getStringExtra("EMAIL")
+        var textView = findViewById<TextView>(R.id.textView)
+        var message = "$username, you are logged in using the email $email"
         textView.text = message
+
     }
 }

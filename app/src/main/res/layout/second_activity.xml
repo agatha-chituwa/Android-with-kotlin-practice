@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".SecondActivity">
 
-    <TextView
-        android:id="@+id/textView2"
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.058"
-        tools:layout_editor_absoluteX="16dp" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="35" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="60dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
