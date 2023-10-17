@@ -10,51 +10,82 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
-
-    private val TAG = "MyActivity"
-    private lateinit var nameText: EditText
-    private lateinit var ageText: EditText
-    //shared preference variables
-    private lateinit var sf: SharedPreferences
-    private lateinit var editor:SharedPreferences.Editor
-
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main);
-        val greetingTextView = findViewById<TextView>(R.id.textView)
-        nameText = findViewById(R.id.textField)
-        ageText = findViewById(R.id.number)
-        //initialize the shared preferece here
-        sf = getSharedPreferences("my_sf", MODE_PRIVATE)
-        editor = sf.edit()
+        val weightText = findViewById<EditText>(R.id.etweight)
+        val heighText = findViewById<EditText>(R.id.etHeight)
+        val btncalculate = findViewById<Button>(R.id.btnCalculate)
 
+        btncalculate.setOnClickListener {
+            //get weight and height in string format
+
+            val weight = weightText.text.toString()
+            val height = heighText.text.toString()
+            if (validateinput(weight, height)) {
+                val bmi = weight.toFloat() / ((height.toFloat() / 100) * (height.toFloat() / 100))
+
+                //two decimal places
+                val bmi2 = String.format("%.2f", bmi).toFloat()
+                displayResults(bmi2)
+            }
+        }
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        //get user imput values
-        val name = nameText.text.toString()
-        val age = ageText.text.toString().toInt()
-        editor.apply{
-            putString("sf_name", name)
-            putInt("sf_age", age)
-            commit()
+    private  fun validateinput(weight:String?, height:String? ): Boolean{
+        return when{
+            weight.isNullOrEmpty() -> {
+                Toast.makeText(this, "weight is empty",Toast.LENGTH_LONG).show()
+                return false
+            }
+            height.isNullOrEmpty() -> {
+                Toast.makeText(this, "height is empty",Toast.LENGTH_LONG).show()
+                return false
+            }else ->{
+                return true
+            }
         }
     }
+    private fun displayResults(bmi:Float){
+        val resultIndex = findViewById<TextView>(R.id.tvindex)
+        val resultDescription = findViewById<TextView>(R.id.tvResult)
+        val info = findViewById<TextView>(R.id.tvinfo)
 
-    override fun onResume() {
-        super.onResume()
-        val name = sf.getString("sf_name", null)
-        val age = sf.getInt("sf_age", 0)
-        nameText.setText(name)
-        if(age != 0) {
-            ageText.setText(age.toString())
+        //display bmi value
+        resultIndex.text = bmi.toString()
+        info.text = "normal range is 18.5 - 24.9"
+
+        var resultText = ""
+        var color = 0
+        when{
+            bmi< 18.50->{
+                resultText = "underWeight"
+                color = R.color.under_weight
+            }
+            bmi in 18.50..24.99 ->{
+                resultText = "Normal and healthy"
+                color = R.color.normal
+            }
+            bmi in 25.00..29.99 ->{
+                resultText = "overweight"
+                color = R.color.over_weight
+            }
+            bmi >29.99 ->{
+                resultText = "Obese"
+                color = R.color.obese
+            }
         }
+
+        resultDescription.setTextColor(ContextCompat.getColor(this, color))
+        resultDescription.text = resultText
+
     }
+
 }
