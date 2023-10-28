@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View.INVISIBLE
+
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
@@ -22,6 +23,13 @@ class MainActivity : AppCompatActivity() {
         val weightText = findViewById<EditText>(R.id.etweight)
         val heighText = findViewById<EditText>(R.id.etHeight)
         val btncalculate = findViewById<Button>(R.id.btnCalculate)
+        val button = findViewById<Button>(R.id.button2)
+
+        button.setOnClickListener {
+
+            val intent = Intent(this, SimpleCalculator::class.java)
+            startActivity(intent)
+        }
 
         btncalculate.setOnClickListener {
             //get weight and height in string format
@@ -53,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun displayResults(bmi:Float){
         val resultIndex = findViewById<TextView>(R.id.tvindex)
         val resultDescription = findViewById<TextView>(R.id.tvResult)
